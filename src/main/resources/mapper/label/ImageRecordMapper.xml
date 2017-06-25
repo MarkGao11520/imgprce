@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hw.xyls.dao.label.ImageRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.hw.xyls.pojo.label.ImageRecord" >
+    <id column="recordId" property="recordid" jdbcType="INTEGER" />
+    <result column="classid" property="classid" jdbcType="INTEGER" />
+    <result column="userid" property="userid" jdbcType="INTEGER" />
+    <result column="completedNum" property="completednum" jdbcType="INTEGER" />
+    <result column="currentImageId" property="currentimageid" jdbcType="INTEGER" />
+    <result column="isComplete" property="iscomplete" jdbcType="INTEGER" />
+    <result column="completeImageIds" property="completeimageids" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    recordId, classid, userid, completedNum, currentImageId, isComplete, completeImageIds
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_image_record
+    where recordId = #{recordid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_image_record
+    where recordId = #{recordid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hw.xyls.pojo.label.ImageRecord" >
+    insert into tb_image_record (recordId, classid, userid, 
+      completedNum, currentImageId, isComplete, 
+      completeImageIds)
+    values (#{recordid,jdbcType=INTEGER}, #{classid,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, 
+      #{completednum,jdbcType=INTEGER}, #{currentimageid,jdbcType=INTEGER}, #{iscomplete,jdbcType=INTEGER}, 
+      #{completeimageids,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hw.xyls.pojo.label.ImageRecord" useGeneratedKeys="true" keyProperty="recordid">
+    insert into tb_image_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="recordid != null" >
+        recordId,
+      </if>
+      <if test="classid != null" >
+        classid,
+      </if>
+      <if test="userid != null" >
+        userid,
+      </if>
+      <if test="completednum != null" >
+        completedNum,
+      </if>
+      <if test="currentimageid != null" >
+        currentImageId,
+      </if>
+      <if test="iscomplete != null" >
+        isComplete,
+      </if>
+      <if test="completeimageids != null" >
+        completeImageIds,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="recordid != null" >
+        #{recordid,jdbcType=INTEGER},
+      </if>
+      <if test="classid != null" >
+        #{classid,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="completednum != null" >
+        #{completednum,jdbcType=INTEGER},
+      </if>
+      <if test="currentimageid != null" >
+        #{currentimageid,jdbcType=INTEGER},
+      </if>
+      <if test="iscomplete != null" >
+        #{iscomplete,jdbcType=INTEGER},
+      </if>
+      <if test="completeimageids != null" >
+        #{completeimageids,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hw.xyls.pojo.label.ImageRecord" >
+    update tb_image_record
+    <set >
+      <if test="classid != null" >
+        classid = #{classid,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null" >
+        userid = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="completednum != null" >
+        completedNum = #{completednum,jdbcType=INTEGER},
+      </if>
+      <if test="currentimageid != null" >
+        currentImageId = #{currentimageid,jdbcType=INTEGER},
+      </if>
+      <if test="iscomplete != null" >
+        isComplete = #{iscomplete,jdbcType=INTEGER},
+      </if>
+      <if test="completeimageids != null" >
+        completeImageIds = #{completeimageids,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where recordId = #{recordid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hw.xyls.pojo.label.ImageRecord" >
+    update tb_image_record
+    set classid = #{classid,jdbcType=INTEGER},
+      userid = #{userid,jdbcType=INTEGER},
+      completedNum = #{completednum,jdbcType=INTEGER},
+      currentImageId = #{currentimageid,jdbcType=INTEGER},
+      isComplete = #{iscomplete,jdbcType=INTEGER},
+      completeImageIds = #{completeimageids,jdbcType=VARCHAR}
+    where recordId = #{recordid,jdbcType=INTEGER}
+  </update>
+</mapper>

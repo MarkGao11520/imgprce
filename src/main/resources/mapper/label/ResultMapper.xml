@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hw.xyls.dao.label.ResultMapper" >
+  <resultMap id="BaseResultMap" type="com.hw.xyls.pojo.label.Result" >
+    <id column="resultId" property="resultid" jdbcType="INTEGER" />
+    <result column="imageId" property="imageid" jdbcType="INTEGER" />
+    <result column="labelName_all" property="labelnameAll" jdbcType="VARCHAR" />
+    <result column="rate_all" property="rateAll" jdbcType="VARCHAR" />
+    <result column="rate" property="rate" jdbcType="DOUBLE" />
+    <result column="create_time" property="createTime" jdbcType="BIGINT" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+    <association column="imageId" property="image" select="com.hw.xyls.dao.image.ImageMapper.selectByPrimaryKey"></association>
+  </resultMap>
+
+  <resultMap id="complateImageMap" type="com.hw.xyls.pojo.image.ComplateImage">
+    <result column="imageId" property="imageId" jdbcType="INTEGER"></result>
+    <association column="imageId" property="label" select="getComplateLabel"></association>
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    resultId, imageId, labelName_all, rate_all, rate, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_result
+    where resultId = #{resultid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_result
+    where resultId = #{resultid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hw.xyls.pojo.label.Result" >
+    insert into tb_result (resultId, imageId, labelName_all, 
+      rate_all, rate, create_time, 
+      update_time)
+    values (#{resultid,jdbcType=INTEGER}, #{imageid,jdbcType=INTEGER}, #{labelnameAll,jdbcType=VARCHAR}, 
+      #{rateAll,jdbcType=VARCHAR}, #{rate,jdbcType=DOUBLE}, #{createTime,jdbcType=BIGINT}, 
+      #{updateTime,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hw.xyls.pojo.label.Result" >
+    insert into tb_result
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="resultid != null" >
+        resultId,
+      </if>
+      <if test="imageid != null" >
+        imageId,
+      </if>
+      <if test="labelnameAll != null" >
+        labelName_all,
+      </if>
+      <if test="rateAll != null" >
+        rate_all,
+      </if>
+      <if test="rate != null" >
+        rate,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="resultid != null" >
+        #{resultid,jdbcType=INTEGER},
+      </if>
+      <if test="imageid != null" >
+        #{imageid,jdbcType=INTEGER},
+      </if>
+      <if test="labelnameAll != null" >
+        #{labelnameAll,jdbcType=VARCHAR},
+      </if>
+      <if test="rateAll != null" >
+        #{rateAll,jdbcType=VARCHAR},
+      </if>
+      <if test="rate != null" >
+        #{rate,jdbcType=DOUBLE},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hw.xyls.pojo.label.Result" >
+    update tb_result
+    <set >
+      <if test="imageid != null" >
+        imageId = #{imageid,jdbcType=INTEGER},
+      </if>
+      <if test="labelnameAll != null" >
+        labelName_all = #{labelnameAll,jdbcType=VARCHAR},
+      </if>
+      <if test="rateAll != null" >
+        rate_all = #{rateAll,jdbcType=VARCHAR},
+      </if>
+      <if test="rate != null" >
+        rate = #{rate,jdbcType=DOUBLE},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    where resultId = #{resultid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hw.xyls.pojo.label.Result" >
+    update tb_result
+    set imageId = #{imageid,jdbcType=INTEGER},
+      labelName_all = #{labelnameAll,jdbcType=VARCHAR},
+      rate_all = #{rateAll,jdbcType=VARCHAR},
+      rate = #{rate,jdbcType=DOUBLE},
+      create_time = #{createTime,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=BIGINT}
+    where resultId = #{resultid,jdbcType=INTEGER}
+  </update>
+
+  <select id="getResultList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_result
+  </select>
+
+  <select id="getComplateImage" resultMap="complateImageMap">
+    SELECT
+    i.imageId,COUNT(b.labelId) as count
+    FROM
+    tb_image i
+    LEFT JOIN tb_label b ON i.imageId = b.imageId
+    WHERE
+	i.imageId NOT IN (select r.imageId from tb_result r)
+    group by b.imageId
+    HAVING
+    count(b.labelId) >=1000
+  </select>
+
+  <select id="getComplateLabel" resultType="com.hw.xyls.pojo.label.ComplateLabel">
+    SELECT
+    lableName as labelName,
+    count(lableName) as num
+    FROM
+    tb_label
+    WHERE
+    imageId = #{imageId}
+    GROUP BY
+    lableName
+    ORDER BY
+    COUNT(lableName) desc
+    limit 0,6
+  </select>
+
+  <insert id="doCreateResultBatch">
+    INSERT INTO tb_result(imageId,labelName_all,rate_all,rate,create_time)
+    VALUES
+    <foreach collection="list" item="item" separator=",">
+      (#{item.imageid},#{item.labelnameAll},#{item.rateAll},#{item.rate},#{item.createTime})
+    </foreach>
+  </insert>
+</mapper>

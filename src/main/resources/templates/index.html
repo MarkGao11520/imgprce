@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<link rel="stylesheet" href="bootstrap/css/bootstrap-theme.min.css" />
+		<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
+		<script src="bootstrap/js/jquery.min.js"></script>
+		<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="bootstrap/js/bootbox.js"></script>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+			}
+		</style>
+	</head>
+
+	<body>
+		<nav id="nav" class="navbar navbar-default navbar-inverse navbar-fixed-top" role="navigation">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<a id="storeName" class="navbar-brand" href="#">华为图片标注系统</a>
+				</div>
+				<div>
+					<ul id="nn" class="nav navbar-nav">
+						<li id="nn1">
+							<a href="javascript:changeNav2('image',1)">图片管理</a>
+						</li>
+						<li id="nn2" class="active">
+							<a href="javascript:changeNav2('result',2)">结果管理</a>
+						</li>
+
+					</ul>
+				</div>
+				<ul class="nav navbar-nav navbar-right">
+					<li>
+						<a href="javascript:openDesignPanel()"><span class="glyphicon glyphicon-user"></span> 修改密码</a>
+					</li>
+					<li>
+						<a href="./logout"><span class="glyphicon glyphicon-log-in"></span> 退出</a>
+					</li>
+				</ul>
+			</div>
+			<ol class="nav nav-tabs nav-justified" id="nt">
+
+			</ol>
+
+		</nav>
+
+		<!--表单设计器开始-->
+		<div id="desginPanel" hidden="hidden" style="width: 80%;position: absolute;top: 15%;right: 10%;"
+			 class="panel panel-warning">
+			<div class="panel-heading">
+				<h3 class="panel-title">修改密码</h3>
+				<a class="a_close" href="javascript:closeDesignPanel()"><span style="float: right;margin-top: -1.5%;"
+																			  class="glyphicon glyphicon-remove"></span></a>
+			</div>
+			<div class="panel-body">
+				<form class="bs-example bs-example-form" role="form">
+
+					<div class="input-group">
+						<span class="input-group-addon">原密码</span>
+						<input type="text" id="oldP" class="form-control" placeholder="请输入原密码"/>
+					</div>
+					<br></br>
+
+					<div class="input-group">
+						<span class="input-group-addon">新密码</span>
+						<input type="text" id="newP1" class="form-control" placeholder="请输入新密码"/>
+					</div>
+					<br></br>
+
+					<div class="input-group">
+						<span class="input-group-addon">重复新密码</span>
+						<input type="text" id="newP2" class="form-control" placeholder="请输入新密码"/>
+					</div>
+					<br></br>
+
+				</form>
+				<button class="btn btn-warning btn-block" style="width: 25%;margin: 0 auto;" id="desigenSumbit"
+						onclick="designSubmit()">提交
+				</button>
+			</div>
+		</div>
+		<!--表单设计器结束-->
+		<iframe id="iframe" src="prizeManager" style="width: 100%;overflow: auto" frameborder="0" scrolling="no"  onload="this.height=100"></iframe>
+		<nav class="navbar navbar-default navbar-inverse navbar-fixed-bottom" id="bnav" role="navigation">
+			<div class="container-fluid">
+				<!--<div class="navbar-header">-->
+					<a  style="margin-left: 35%;width: 40%" class="navbar-brand" href="#">©版权所有天津泽瑞科技有限公司
+						津ICP备16006638号</a>
+				<!--</div>-->
+			</div>
+		</nav>
+	</body>
+
+	<script type="text/javascript" src="js/index.js"></script>
+
+</html>

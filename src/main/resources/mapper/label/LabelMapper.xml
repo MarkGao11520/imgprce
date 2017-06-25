@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hw.xyls.dao.label.LabelMapper">
+    <resultMap id="BaseResultMap" type="com.hw.xyls.pojo.label.Label">
+        <id column="labelId" property="labelid" jdbcType="INTEGER"/>
+        <result column="lableName" property="lablename" jdbcType="VARCHAR"/>
+        <result column="imageId" property="imageid" jdbcType="INTEGER"/>
+        <result column="uId" property="uid" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="BIGINT"/>
+        <result column="update_time" property="updateTime" jdbcType="BIGINT"/>
+        <result column="isdel" property="isdel" jdbcType="INTEGER"/>
+        <association column="imageId" property="image"
+                     select="com.hw.xyls.dao.image.ImageMapper.selectByPrimaryKey"></association>
+    </resultMap>
+
+
+
+    <sql id="Base_Column_List">
+    labelId, lableName, imageId, uId, create_time, update_time, isdel
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_label
+        where labelId = #{labelid,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tb_label
+    where labelId = #{labelid,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.hw.xyls.pojo.label.Label">
+    insert into tb_label (labelId, lableName, imageId, 
+      uId, create_time, update_time, 
+      isdel)
+    values (#{labelid,jdbcType=INTEGER}, #{lablename,jdbcType=VARCHAR}, #{imageid,jdbcType=INTEGER}, 
+      #{uid,jdbcType=INTEGER}, #{createTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT}, 
+      #{isdel,jdbcType=INTEGER})
+  </insert>
+    <insert id="insertSelective" parameterType="com.hw.xyls.pojo.label.Label">
+        insert into tb_label
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="labelid != null">
+                labelId,
+            </if>
+            <if test="lablename != null">
+                lableName,
+            </if>
+            <if test="imageid != null">
+                imageId,
+            </if>
+            <if test="uid != null">
+                uId,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="isdel != null">
+                isdel,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="labelid != null">
+                #{labelid,jdbcType=INTEGER},
+            </if>
+            <if test="lablename != null">
+                #{lablename,jdbcType=VARCHAR},
+            </if>
+            <if test="imageid != null">
+                #{imageid,jdbcType=INTEGER},
+            </if>
+            <if test="uid != null">
+                #{uid,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=BIGINT},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=BIGINT},
+            </if>
+            <if test="isdel != null">
+                #{isdel,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.hw.xyls.pojo.label.Label">
+        update tb_label
+        <set>
+            <if test="lablename != null">
+                lableName = #{lablename,jdbcType=VARCHAR},
+            </if>
+            <if test="imageid != null">
+                imageId = #{imageid,jdbcType=INTEGER},
+            </if>
+            <if test="uid != null">
+                uId = #{uid,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=BIGINT},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=BIGINT},
+            </if>
+            <if test="isdel != null">
+                isdel = #{isdel,jdbcType=INTEGER},
+            </if>
+        </set>
+        where labelId = #{labelid,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.hw.xyls.pojo.label.Label">
+    update tb_label
+    set lableName = #{lablename,jdbcType=VARCHAR},
+      imageId = #{imageid,jdbcType=INTEGER},
+      uId = #{uid,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=BIGINT},
+      isdel = #{isdel,jdbcType=INTEGER}
+    where labelId = #{labelid,jdbcType=INTEGER}
+  </update>
+
+    <select id="getLabelList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_label
+    </select>
+
+
+</mapper>
