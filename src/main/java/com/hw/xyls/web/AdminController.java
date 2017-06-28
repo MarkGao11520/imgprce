@@ -8,6 +8,7 @@ import com.hw.xyls.pojo.user.User;
 import com.hw.xyls.pojo.user.UserDto;
 import com.hw.xyls.service.image.IimageService;
 import com.hw.xyls.service.user.IUserService;
+import com.hw.xyls.tool.Tools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.tools.Tool;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -70,9 +72,10 @@ public class AdminController {
     }
 
     @RequestMapping("uploadImageBatch")
-    public Map<String,Object> uploadImageBatch(MultipartFile zip, Integer uid){
+    public Map<String,Object> uploadImageBatch(MultipartFile zip){
         Map<String,Object> map=null;
         try{
+            Integer uid = Tools.obtainPrincipal().getId();
             map = iimageService.doUploadImageBatchs(zip, uid);
         }catch (Exception e){
             map = new HashMap<String,Object>();

@@ -77,7 +77,11 @@ public class ImageServiceImpl implements IimageService {
     @Transactional
     public void createResultScheduled() {
         logger.info("生成图片标签结果计划任务开始");
-        List<ComplateImage> complateImages = resultMapper.getComplateImage();
+        List<ComplateImage> complateImages = null;
+        try{
+            complateImages = resultMapper.getComplateImage();
+        }catch (Exception e){
+        }
         if(complateImages!=null&&complateImages.size()>0) {
             List<Result> results = new ArrayList<>();
             List<Integer> imageids = new ArrayList<>();
@@ -204,6 +208,10 @@ public class ImageServiceImpl implements IimageService {
 //            logger.info("创建前："+JSON.toJSONString(list));
             int addNum = classesMapper.createNewGroups(list);
             if (list.size() == addNum) {
+                for(Classes classes:list){
+                    classes.setClassname(createCodeName(classes.getClassid()));
+                    classesMapper.updateByPrimaryKeySelective(classes);
+                }
 //                logger.info("创建后："+JSON.toJSONString(list));
                 return list;
             } else {
@@ -227,6 +235,14 @@ public class ImageServiceImpl implements IimageService {
         Classes classes = new Classes();
         classes.setImagenums(imageNums);
         return classes;
+    }
+
+    private String createCodeName(Integer id){
+        Calendar calendar = Calendar.getInstance();
+        String code = id.toString().length()==4?id.toString():id.toString().length()==3?"0"+id:id.toString().length()==2?"00"+id:"000"+id;
+        StringBuffer sb = new StringBuffer();
+        sb.append("XYLS").append(calendar.getWeekYear()).append(code);
+        return sb.toString();
     }
 
     /**
