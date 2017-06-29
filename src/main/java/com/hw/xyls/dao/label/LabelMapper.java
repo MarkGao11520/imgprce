@@ -1,6 +1,7 @@
 package com.hw.xyls.dao.label;
 
 import com.hw.xyls.pojo.label.Label;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -18,4 +19,6 @@ public interface LabelMapper {
     int updateByPrimaryKey(Label record);
 
     List<Label> getLabelList();
+
+    List<Label> getLabelListByUid(@Param("imageid") Integer imageid,@Param("uid") Integer uid);
 }

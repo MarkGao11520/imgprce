@@ -60,9 +60,21 @@ public class Url {
      */
     public static final String IMAGE_SUBMIT_URL = "androidController/imageSubmit";
     /**
+     * 修改图片标注
+     */
+    public static final String UPDATE_LABEL_URL = "androidController/updateLabe";
+    /**
+     * 删除图片标注
+     */
+    public static final String DELETE_LABEL_URL = "androidController/deleteLabel";
+    /**
+     * 获取图片标注
+     */
+    public static final String GET_LABELLIST_BYUID_ANDIMAGEID_URL = "androidController/getLabelListByUidAndImageId";
+    /**
      * 添加图片标注记录
      */
-    public static final String ADD_IMAGE_RECORD_URL = "androidController/updatePhoneByUid";
+    public static final String ADD_IMAGE_RECORD_URL = "androidController/addImageRecord";
     /**
      * 获取历史记录
      */

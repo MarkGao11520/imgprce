@@ -245,8 +245,37 @@ public class AndroidController {
      * @return
      */
     @RequestMapping("imageSubmit")
-    public Map<String,Object> imageSubmit(@RequestBody List<Label> label,Integer recordid){
+    public Map<String,Object> imageSubmit(Label label,Integer recordid){
         return iLabelService.addLabel(label,recordid);
+    }
+
+    /**
+     * 修改图片标注
+     * @param label
+     * @return
+     */
+    @RequestMapping("updateLabe")
+    public Map<String,Object> updateLabe(Label label){
+        return iLabelService.updateLabel(label);
+    }
+
+    /**
+     * 删除图片标注
+     * @param labelid
+     * @return
+     */
+    @RequestMapping("deleteLabel")
+    public Map<String,Object> deleteLabel(Integer labelid){
+        return iLabelService.deleteLabel(labelid);
+    }
+
+    /**
+     * 获取图片标注
+     * @return
+     */
+    @RequestMapping("getLabelListByUidAndImageId")
+    public List<Label> getLabelListByUidAndImageId(Integer uid,Integer imageid){
+        return iLabelService.obtainLabelByUid(uid, imageid);
     }
 
     /**

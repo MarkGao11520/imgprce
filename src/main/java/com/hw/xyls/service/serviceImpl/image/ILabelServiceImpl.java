@@ -20,7 +20,7 @@ import java.util.Map;
  */
 @Service
 @Scope("prototype")
-public class ILabelServiceImpl implements ILabelService{
+public class ILabelServiceImpl implements ILabelService {
     @Autowired
     LabelMapper labelMapper;
     @Autowired
@@ -28,57 +28,82 @@ public class ILabelServiceImpl implements ILabelService{
 
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
-    public Map<String, Object> addLabel(List<Label> label,Integer recordid) {
-        Map<String, Object> map = new HashMap<String,Object>();
-        try{
-            for(Label label1:label){
-                if(labelMapper.insertSelective(label1)<1){
-                    map.put("result",0);
-                    throw new RuntimeException("标注出错1");
-                }
+    public Map<String, Object> addLabel(Label label, Integer recordid) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        try {
+            if (labelMapper.insertSelective(label) < 1) {
+                map.put("result", 0);
+                throw new RuntimeException("标注出错1");
             }
             ImageRecord imageRecord = imageRecordMapper.selectByPrimaryKey(recordid);
             imageRecord.setRecordid(recordid);
-            imageRecord.setCompletednum(imageRecord.getCompletednum()+1);
-            imageRecord.setCurrentimageid(label.get(0).getImageid());
-            if(imageRecord.getCompletednum()==9){
+            imageRecord.setCompletednum(imageRecord.getCompletednum() + 1);
+            imageRecord.setCurrentimageid(label.getImageid());
+            if (imageRecord.getCompletednum() == 9) {
                 imageRecord.setIscomplete(1);
+                if (imageRecord.getCompleteimageids() == null)
+                    imageRecord.setCompleteimageids(label.getImageid().toString());
+                else
+                    imageRecord.setCompleteimageids(imageRecord.getCompleteimageids() + "," + label.getImageid().toString());
             }
-            if(imageRecordMapper.updateByPrimaryKeySelective(imageRecord)>0){
-                map.put("result",1);
-            }else{
-                map.put("result",0);
+            if (imageRecordMapper.updateByPrimaryKeySelective(imageRecord) > 0) {
+                map.put("result", 1);
+            } else {
+                map.put("result", 0);
                 throw new RuntimeException("标注出错2");
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-            map.put("result",0);
+            map.put("result", 0);
             throw new RuntimeException("标注出错2");
-        }finally {
+        } finally {
             return map;
         }
     }
 
 
-
     @Transactional
     @Override
-    public Map<String, Object> updateLabel(@RequestBody List<Label> label) {
-        Map<String, Object> map = new HashMap<String,Object>();
-        try{
-            for(Label label1:label){
-                if(labelMapper.updateByPrimaryKeySelective(label1)<1){
-                    map.put("result",0);
+    public Map<String, Object> updateLabel(Label label) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        try {
+                if (labelMapper.updateByPrimaryKeySelective(label) < 1) {
+                    map.put("result", 0);
                     throw new RuntimeException("标注出错1");
                 }
-            }
-            map.put("result",1);
-        }catch (Exception e){
+            map.put("result", 1);
+        } catch (Exception e) {
             e.printStackTrace();
-            map.put("result",0);
+            map.put("result", 0);
             throw new RuntimeException("标注出错2");
-        }finally {
+        } finally {
             return map;
         }
+    }
+
+    @Override
+    public Map<String, Object> deleteLabel(Integer labelid) {
+        Label label = new Label();
+        Map<String, Object> map = new HashMap<String, Object>();
+        try {
+            label.setImageid(labelid);
+            label.setIsdel(1);
+            if (labelMapper.updateByPrimaryKeySelective(label) < 1) {
+                map.put("result", 0);
+                throw new RuntimeException("标注出错1");
+            }
+            map.put("result", 1);
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("result", 0);
+            throw new RuntimeException("标注出错2");
+        } finally {
+            return map;
+        }
+    }
+
+    @Override
+    public List<Label> obtainLabelByUid(Integer uid, Integer imageid) {
+        return labelMapper.getLabelListByUid(imageid,uid);
     }
 }

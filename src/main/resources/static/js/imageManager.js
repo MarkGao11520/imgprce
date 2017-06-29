@@ -117,6 +117,7 @@ function initFileUpload() {
         showUpload: false,//是否显示上传按钮
         allowedFileExtensions: ['zip'],
         maxFileCount: 10,
+        // maxFileSize:1024,
         enctype: 'multipart/form-data',
         browseClass: "btn btn-success"
     })

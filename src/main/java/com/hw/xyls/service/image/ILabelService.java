@@ -14,13 +14,29 @@ public interface ILabelService {
      * @param label
      * @return
      */
-    Map<String,Object> addLabel(List<Label> label,Integer recordid);
+    Map<String,Object> addLabel(Label label,Integer recordid);
 
     /**
      * 编辑标注
      * @param label
      * @return
      */
-    Map<String,Object> updateLabel(List<Label> label);
+    Map<String,Object> updateLabel(Label label);
+
+
+    /**
+     * 删除标注
+     * @param labelid
+     * @return
+     */
+    Map<String,Object> deleteLabel(Integer labelid);
+
+    /**
+     * 根据图片id和用户id或者标注
+     * @param uid
+     * @param imageid
+     * @return
+     */
+    List<Label> obtainLabelByUid(Integer uid,Integer imageid);
 
 }

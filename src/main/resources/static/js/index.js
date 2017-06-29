@@ -1,4 +1,3 @@
-changeNav2('image',1);
 getUser();
 
 
